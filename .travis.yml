@@ -1,0 +1,22 @@
+language: node_js
+
+node_js:
+  - '14'
+  
+cache: npm
+
+services:
+  - docker
+
+branches:
+  only:
+    - master
+
+install:
+- npm i
+
+script:
+  - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+  - docker build -t express-finance-job .
+  - docker tag express-finance-job $DOCKER_USERNAME/express-finance-job
+  - docker push $DOCKER_USERNAME/express-finance-job
