@@ -20,12 +20,12 @@ npm start
 
 # verificar logs
 ```
+ou
 
-#### 3) Iniciar Job Especifico
 ``` sh
 npm run dev
 
-# verificar logs
+# executar job especifico
 ```
 
 ## EXTRA
