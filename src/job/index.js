@@ -3,38 +3,34 @@ import env from "../env";
 import { Logger } from "../logger";
 import commands from "../commands";
 import elasticAgent from "../apm";
+import { v4 } from "uuid";
 
-if(env.env === "development"){
+setImmediate(()=>{
+    const environment = env.env
     Logger.info("Registered service JOB batch is ON");
     commands.forEach((job)=>{
+        const uuid = v4();
+        const instance = `${uuid} ${job.name}`;
+        const trans = elasticAgent?.startTransaction(instance)
         new CronJob(job.schedule, async ()=>{
             try {
-                await job.command();
-            } catch (error) {
-                if (elasticAgent && elasticAgent.isStarted()) {
-                    elasticAgent.captureError(error, () => {
-                        Logger.error(`Send APM: ${error.message}`);
-                    });
-                }
-            }
-        }, null, true, env.timezone);
-    });
-    Logger.info(`Running ${commands.length} jobs`);
-}else{
-    commands.forEach((job)=>{
-        new CronJob(job.schedule, async ()=>{
-            if(job.group === "second"){
-                try {
+                if(environment === "development" || job.group === "second"){
                     await job.command();
-                } catch (error) {
-                    if (elasticAgent && elasticAgent.isStarted()) {
-                        elasticAgent.captureError(error, () => {
-                            Logger.error(`Send APM: ${error.message}`);
-                        });
-                    }
                 }
+                trans.result = 'success'
+            } catch (error) {
+                trans.result = 'error'
+                elasticAgent?.captureError(error, () => {
+                    Logger.error(`Send APM: ${error.message}`);
+                });
             }
+            trans?.end()
         }, null, true, env.timezone);
     });
-    Logger.info(`Not Registered ALL service JOB batch is OFF NODE_ENV is not development is ${env.env} registered jobs group "second"`);
-}
+
+    if(environment === "development"){
+        Logger.info(`Running ${commands.length} jobs`);
+    }else{
+        Logger.info(`Not Registered ALL service JOB batch is OFF NODE_ENV is not development is ${environment} registered jobs group "second"`);
+    }
+})
