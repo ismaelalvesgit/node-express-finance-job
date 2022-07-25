@@ -7,6 +7,7 @@ dotenv.config({path: path.join(__dirname, env)});
 export default {
     env: process.env.NODE_ENV || "development",
     timezone: process.env.TZ || "America/Fortaleza",
+    coreApi: process.env.CORE_URL,
     brapi: process.env.BRAPI_URL,
     mercadoBitCoin: process.env.MERCADO_BITCOIN_URL,
     curreyncyApi: process.env.CURRENCY_URL,
