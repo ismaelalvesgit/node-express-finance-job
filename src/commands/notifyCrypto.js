@@ -1,4 +1,4 @@
-import { investmentService, brapiService, queueService } from "../services";
+import { investmentService, brapiService, queueService, coreApiService } from "../services";
 import { isAfter, parseISO } from "date-fns";
 import { Logger } from "../logger";
 import { diffPercent, getPercent, parsePercent } from "../utils";
@@ -13,7 +13,7 @@ const command = async () => {
     const key = "/update-investment";
     const router = "notify-price";
     const routingKey = "notify-price-socket";
-    const investments = await investmentService.findAll({"category.name": categoryType.CRIPTOMOEDA});
+    const investments =  await coreApiService.getInvestment({"search": {"category.name": categoryType.CRIPTOMOEDA}});
     await Promise.all(investments.map(async (invest) => {
         try {
             const qoute = await brapiService.findQouteCoin2(invest.name);

@@ -41,6 +41,12 @@ export class Currencyapi extends CustomError {
     }
 }
 
+export class CoreApi extends CustomError {
+    constructor({statusCode, message }){
+        super(statusCode, message, "coreapi");
+    }
+}
+
 export class YahooApi extends CustomError {
     constructor({statusCode, message }){
         super(statusCode, message, "yahoo");

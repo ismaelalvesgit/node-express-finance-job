@@ -11,6 +11,7 @@ import * as investmentService from "./investment.service";
 import * as dividendsService from "./dividends.service";
 import * as eventsService from "./events.service";
 import * as queueService from "./queue.service";
+import * as coreApiService from "./coreapi.service";
 
 export {
     categoryService,
@@ -25,5 +26,6 @@ export {
     investmentService,
     dividendsService,
     eventsService,
-    queueService
+    queueService,
+    coreApiService
 }; 
