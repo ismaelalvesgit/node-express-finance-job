@@ -7,8 +7,7 @@ let redisClient;
 if(env.redis.host){
     redisClient = new Redis({
         host: env.redis.host,
-        port: env.redis.port,
-        keyPrefix: env.redis.prefix
+        port: env.redis.port
     });
     Logger.info("Registered service REDIS is ON");
 }else{
