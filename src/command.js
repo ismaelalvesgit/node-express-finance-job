@@ -34,23 +34,23 @@ commands.map((command, key) => {
     if(env.env === "production"){
         const uuid = v4();
         const instance = `${uuid} ${command.name}`;
-        const trans = elasticAgent?.startTransaction(instance)
+        const trans = elasticAgent?.startTransaction(instance);
         let exitCode;
         try {
           Logger.info(`${instance} start`);
           const message = await command.command();
-          trans.result = 'success'
+          trans.result = "success";
           Logger.info(`${instance} end with message: ${message}`);
           exitCode = 0;
         } catch (ex) {
           exitCode = 1;
-          trans.result = 'error'
+          trans.result = "error";
           elasticAgent?.captureError(ex, () => {
               Logger.error(`Send APM: ${ex.message}`);
           });
           Logger.error(ex);
         }
-        trans?.end()
+        trans?.end();
         process.exit(exitCode);
     }else{
         Logger.info("NODE_ENV is required production");

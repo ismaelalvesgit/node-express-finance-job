@@ -1,7 +1,7 @@
 import env from "../env";
 import redisClient from "../redis";
 
-export const TIME_DAY = 86400
+export const TIME_DAY = 86400;
 
 /**
  * 
@@ -39,7 +39,7 @@ export const getCache = async (key) => {
  */
 export const delCache = (key) => {
     if (env.redis.host) {
-        return redisClient.del(key)
+        return redisClient.del(key);
     }
 };
 
@@ -62,6 +62,6 @@ export const delPrefixCache = async (prefix) => {
  */
 export const delKeysCache = async (keys) => {
     if (env.redis.host) {
-        return Promise.all(keys.map((key)=> delPrefixCache(key)))
+        return Promise.all(keys.map((key)=> delPrefixCache(key)));
     }
 };
