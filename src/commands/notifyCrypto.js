@@ -1,4 +1,4 @@
-import { investmentService, brapiService, queueService, coreApiService } from "../services";
+import { brapiService, queueService, coreApiService } from "../services";
 import { isAfter, parseISO } from "date-fns";
 import { Logger } from "../logger";
 import { diffPercent, getPercent, parsePercent } from "../utils";
@@ -47,9 +47,10 @@ const command = async () => {
                         })
                     }
                 });
+                Logger.info(`Success notify price crypto: ${invest.name}`);
             }
         } catch (error) {
-            Logger.error(`Faill to notify investment: ${invest.name} - error: ${error}`);
+            Logger.error(`Faill to notify price crypto: ${invest.name} - error: ${error}`);
         }
     }));
 

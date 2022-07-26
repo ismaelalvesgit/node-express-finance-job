@@ -1,5 +1,5 @@
 import axios from "axios";
-import { investmentService, eventsService } from "../services";
+import { eventsService, coreApiService } from "../services";
 import knex from "../db";
 import categoryType from "../enum/categoryType";
 import { Logger } from "../logger";
@@ -13,7 +13,7 @@ const deadline = 180;
 
 const command = async () => {
     if(env.yieldapi){
-        const investments = await investmentService.findAll({"category.name": categoryType.ACAO});
+        const investments = await coreApiService.getInvestment({ "search":{"category.name": categoryType.ACAO}});
         await knex.transaction(async (trx) => {
             await Promise.all(investments.map(async(investment)=>{
                 try {

@@ -49,7 +49,7 @@ const http = new HttpAdapter({
 export const getInvestment = async (params)=>{
     try {
         const { data } = await http.send({
-            url: `/investment`,
+            url: "/investment",
             method: "GET",
             params
         });
@@ -57,28 +57,6 @@ export const getInvestment = async (params)=>{
         return data;
     } catch (error) {
         const defaultMessage = "Failed to get investment";
-        const message = R.pathOr(
-            defaultMessage,
-            ["response", "data", "message"],
-            error,
-        );
-        throw new CoreApi({statusCode: error?.response?.status, message});
-    }
-};
-
-/**
- * @returns {Promise<Array<CurrencyAv>>}
- */
-export const getAvailable = async ()=>{
-    try {
-        const { data } = await http.send({
-            url: "/xml/available",
-            method: "GET"
-        });
-
-        return __formatAvailable(JSON.parse(xml2json(data)));
-    } catch (error) {
-        const defaultMessage = "Failed to get available currency";
         const message = R.pathOr(
             defaultMessage,
             ["response", "data", "message"],

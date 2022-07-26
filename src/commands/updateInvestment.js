@@ -1,4 +1,4 @@
-import { investmentService, iexcloundService, queueService } from "../services";
+import { investmentService, iexcloundService, queueService, coreApiService } from "../services";
 import { isAfter, parseISO } from "date-fns";
 import knex from "../db";
 import { Logger } from "../logger";
@@ -13,7 +13,7 @@ const command = async () => {
     const key = "/update-investment";
     const router = "notify-price";
     const routingKey = "notify-price-socket";
-    const investments = await investmentService.findAll();
+    const investments = await coreApiService.getInvestment();
     await knex.transaction(async (trx) => {
         await Promise.all(investments.map(async (invest) => {
             try {

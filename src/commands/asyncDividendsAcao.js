@@ -1,6 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
-import { dividendsService, investmentService, transactionService } from "../services";
+import { coreApiService, dividendsService, transactionService } from "../services";
 import knex from "../db";
 import categoryType from "../enum/categoryType";
 import { Logger } from "../logger";
@@ -10,12 +10,12 @@ import env from "../env";
 
 const name = "async-divideds-acao";
 const group = "day";
-const schedule = "0 10 * * 1-5";
+const schedule = "55 9 * * 1-5";
 const deadline = 180;
 
 const command = async () => {
     if(env.yieldapi){
-        const investments = await investmentService.findAll({"category.name": categoryType.ACAO});
+        const investments = await coreApiService.getInvestment({ "search":{"category.name": categoryType.ACAO}});
         await knex.transaction(async (trx) => {
             await Promise.all(investments.map(async(investment)=>{
                 try {
