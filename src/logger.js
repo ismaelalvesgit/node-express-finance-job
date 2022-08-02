@@ -7,6 +7,6 @@ export const {
   Logger,
   Redact,
 } = init({
-  PROJECT_NAME: "finance",
+  PROJECT_NAME: "finance-job",
   LOG_LEVEL: env.env === "test" ? "fatal" : "debug",
 });
