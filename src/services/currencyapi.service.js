@@ -2,7 +2,6 @@ import R from "ramda";
 import { Currencyapi } from "../utils/erro";
 import HttpAdapter from "../utils/axios";
 import env from "../env";
-import { xml2json } from "xml-js";
 
 /**
  * @typedef Currency
@@ -71,21 +70,6 @@ const __formaUrl = (name)=>{
 
 /**
  * 
- * @param {Object} data
- * @returns {Array<CurrencyAv>} 
- */
-const __formatAvailable = (data)=>{
-    const tmp = data["elements"][0]["elements"];
-    return tmp.map((e)=>{
-        return {
-            id: e.name,
-            code: e.elements[0].text
-        };
-    });
-};
-
-/**
- * 
  * @param {Array<string> | string} name 
  * @returns {Promise<Array<Currency>>}
  */
@@ -99,50 +83,6 @@ export const getCurrency = async (name)=>{
         return _formatData(data);
     } catch (error) {
         const defaultMessage = "Failed to get currency";
-        const message = R.pathOr(
-            defaultMessage,
-            ["response", "data", "message"],
-            error,
-        );
-        throw new Currencyapi({statusCode: error?.response?.status, message});
-    }
-};
-
-/**
- * @returns {Promise<Array<CurrencyAv>>}
- */
-export const getAvailable = async ()=>{
-    try {
-        const { data } = await http.send({
-            url: "/xml/available",
-            method: "GET"
-        });
-
-        return __formatAvailable(JSON.parse(xml2json(data)));
-    } catch (error) {
-        const defaultMessage = "Failed to get available currency";
-        const message = R.pathOr(
-            defaultMessage,
-            ["response", "data", "message"],
-            error,
-        );
-        throw new Currencyapi({statusCode: error?.response?.status, message});
-    }
-};
-
-/**
- * @returns {Promise<Array<CurrencyAv>>}
- */
-export const getId = async ()=>{
-    try {
-        const { data } = await http.send({
-            url: "/xml/available/uniq",
-            method: "GET"
-        });
-
-        return __formatAvailable(JSON.parse(xml2json(data)));
-    } catch (error) {
-        const defaultMessage = "Failed to get code currency";
         const message = R.pathOr(
             defaultMessage,
             ["response", "data", "message"],

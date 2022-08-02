@@ -2,23 +2,6 @@ import * as boundModel from "../model/bound.model";
 import { setCache, getCache } from "../utils/cache";
 
 /**
- * @param {import("../model/bound.model").BoundList} where 
- * @returns {import('knex').Knex.QueryBuilder}
- */
-export const findAll = () =>{
-    return boundModel.findAll();
-};
-
-/**
- * @param {import("../model/bound.model").BoundList} where
- * @param {import('knex').Knex.Transaction} trx  
- * @returns {import('knex').Knex.QueryBuilder}
- */
-export const findOne = (where, trx) =>{
-    return boundModel.findOne(where, trx);
-};
-
-/**
  * @param {import("../model/bound.model").BoundList} data 
  * @returns {import('knex').Knex.QueryBuilder}
  */
@@ -26,22 +9,6 @@ export const create = (data) =>{
     return boundModel.create(data);
 };
 
-/**
- * @param {import("../model/bound.model").BoundList} where 
- * @param {import("../model/bound.model").BoundList} data 
- * @returns {import('knex').Knex.QueryBuilder}
- */
-export const update = (where, data) =>{
-    return boundModel.update(where, data);
-};
-
-/**
- * @param {import("../model/bound.model").BoundList} where 
- * @returns {import('knex').Knex.QueryBuilder}
- */
-export const del = (where) =>{
-    return boundModel.del(where);
-};
 
 /**
  * @returns {Promise<void>}

@@ -15,7 +15,7 @@ export default class HttpAdapter {
         this.instance = axios.create({
             baseURL: baseUrl,
             headers: Object.assign(headers, {
-                requestId:  uuidv4()
+                requestId: uuidv4()
             }),
             params
         });
