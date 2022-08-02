@@ -59,7 +59,30 @@ export const getInvestment = async (params)=>{
         const defaultMessage = "Failed to get investment";
         const message = R.pathOr(
             defaultMessage,
-            ["response", "data", "message"],
+            ["response", "data", 0, "message"],
+            error,
+        );
+        throw new CoreApi({statusCode: error?.response?.status, message});
+    }
+};
+
+/**
+ * 
+ * @param {Object} data 
+ * @returns {Promise<void>}
+ */
+export const batchInvestment = async (data)=>{
+    try {
+        await http.send({
+            url: "/investment/batch",
+            method: "PUT",
+            data
+        });
+    } catch (error) {
+        const defaultMessage = "Failed to update investments";
+        const message = R.pathOr(
+            defaultMessage,
+            ["response", "data", 0, "message"],
             error,
         );
         throw new CoreApi({statusCode: error?.response?.status, message});
