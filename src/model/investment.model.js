@@ -1,11 +1,10 @@
 import knex from "../db";
-import categoryType from "../enum/categoryType";
 import { jsonObjectArrayQuerySelect } from "../utils";
 import transacting from "../utils/transacting";
 import * as transactionModel from "./transaction.model";
 
 const TABLE_NAME = "investment";
-const VIEW = "view_investment";
+
 export const selectDefault = [
     "id",
     "name",

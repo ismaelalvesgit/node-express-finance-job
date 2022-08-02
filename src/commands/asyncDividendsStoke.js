@@ -12,7 +12,11 @@ const deadline = 180;
 
 const command = async () => {
     if(env.iexclound){
-        const investments =  await coreApiService.getInvestment({ "search": { "category.name": [categoryType.EQUITY, categoryType.ETF_INTER] } });
+        const investments =  await coreApiService.getInvestment({ 
+            "search": { 
+                "category.name": [categoryType.EQUITY, categoryType.ETF_INTER] 
+            } 
+        });
         await knex.transaction(async (trx) => {
             await Promise.all(investments.map(async(investment)=>{
                 try {

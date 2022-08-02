@@ -45,14 +45,14 @@ const command = async () => {
                     changePercentTotal,
                     variationTotal,
                     currency
-                })
+                });
             }
         } catch (error) {
             Logger.error(`Faill to update investment: ${invest.name} - error: ${error}`);
         }
     }));
     if(content.length > 0){
-        await coreApiService.batchInvestment(content)
+        await coreApiService.batchInvestment(content);
     }
     return `Execute ${name} done`;
 };

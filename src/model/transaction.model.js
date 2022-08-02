@@ -2,8 +2,6 @@ import knex from "../db";
 import { jsonObjectQuerySelect } from "../utils";
 import transacting from "../utils/transacting";
 import * as brokerModel from "./broker.model";
-import * as categoryModel from "./category.model";
-import * as investmentModel from "./investment.model";
 
 const TABLE_NAME = "transaction";
 export const selectDefault = [
