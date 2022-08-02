@@ -13,20 +13,20 @@ const command = async () => {
     const key = "/update-investment";
     const router = "notify-price";
     const routingKey = "notify-price-socket";
-    const investments =  await coreApiService.getInvestment({"search": {"category.name": categoryType.CRIPTOMOEDA}});
+    const investments = await coreApiService.getInvestment({ "search": { "category.name": categoryType.CRIPTOMOEDA } });
     await Promise.all(investments.map(async (invest) => {
         try {
             const qoute = await brapiService.findQouteCoin2(invest.name);
             if (isAfter(parseISO(qoute.regularMarketTime), parseISO(invest.updatedAt))) {
                 const priceAverage = invest.priceAverage ?? 0;
-                const priceDay =  Number(qoute.regularMarketPrice || 0);
+                const priceDay = Number(qoute.regularMarketPrice || 0);
                 const priceDayHigh = qoute.regularMarketDayHigh ?? invest.priceDayHigh;
                 const priceDayLow = qoute.regularMarketDayLow ?? invest.priceDayLow;
                 const volumeDay = qoute.regularMarketVolume;
                 const previousClosePrice = Number(qoute.regularMarketPreviousClose || 0);
                 const variationDay = previousClosePrice - priceDay;
                 const changePercentDay = getPercent(variationDay, priceDay);
-                const changePercentTotal = diffPercent(priceDay, priceAverage); 
+                const changePercentTotal = diffPercent(priceDay, priceAverage);
                 const variationTotal = parsePercent(changePercentTotal, priceAverage) * Number(invest.qnt ?? 0);
                 await queueService.publishQeue({
                     router,

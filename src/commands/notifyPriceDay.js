@@ -1,4 +1,4 @@
-import { investmentService } from "../services";
+import { coreApiService } from "../services";
 import { Logger } from "../logger";
 import { send } from "../utils/mail";
 import env from "../env";
@@ -9,8 +9,14 @@ const schedule = "30 18 * * 1-5";
 const deadline = 180;
 
 const command = async () => {
-    const priceHigh = await investmentService.findAll(null, "changePercentDay", "desc", 3);
-    const priceLow = await investmentService.findAll(null, "changePercentDay", "asc", 3);
+    const investments = await coreApiService.getInvestment({
+        "sortBy": "changePercentDay", 
+        "orderBy": "desc"
+    });
+
+    const priceHigh = investments.slice(0, 3);
+    const priceLow = investments.reverse().slice(0, 3);
+    
     await send({
         to: env.email.notificator,
         subject: "Altas / Baixas do Dia",

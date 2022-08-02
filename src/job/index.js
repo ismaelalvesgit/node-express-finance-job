@@ -31,6 +31,8 @@ setImmediate(()=>{
     if(environment === "development"){
         Logger.info(`Running ${commands.length} jobs`);
     }else{
-        Logger.info(`Not Registered ALL service JOB batch is OFF NODE_ENV is not development is ${environment} registered jobs group "second"`);
+        Logger.info(`Not Registered ALL service JOB batch is 
+            OFF NODE_ENV is not development is ${environment} registered jobs group "second"`
+        );
     }
 });

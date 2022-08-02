@@ -12,10 +12,10 @@ const schedule = "0 10 * * 1-5";
 const deadline = 180;
 
 const command = async () => {
-    if(env.yieldapi){
-        const investments = await coreApiService.getInvestment({ "search":{"category.name": categoryType.ACAO}});
+    if (env.yieldapi) {
+        const investments = await coreApiService.getInvestment({ "search": { "category.name": categoryType.ACAO } });
         await knex.transaction(async (trx) => {
-            await Promise.all(investments.map(async(investment)=>{
+            await Promise.all(investments.map(async (investment) => {
                 try {
                     const formData = new FormData();
                     formData.append("year", new Date().getFullYear());
@@ -24,15 +24,15 @@ const command = async () => {
                         headers: formData.getHeaders()
                     });
 
-                    if(data.data){
-                        await Promise.all(data.data.map(async(event) => {
+                    if (data.data) {
+                        await Promise.all(data.data.map(async (event) => {
                             try {
                                 const check = await eventsService.findOne({
                                     investmentId: investment.id,
                                     link: event.linkPdf
                                 }, trx);
 
-                                if(!check){
+                                if (!check) {
                                     await eventsService.create({
                                         investmentId: investment.id,
                                         assetMainId: new Date().getTime(),
@@ -44,21 +44,21 @@ const command = async () => {
                                     Logger.info(`Auto created event, investment: ${investment.name}`);
                                 }
                             } catch (error) {
-                                if(error.code !== "ER_DUP_ENTRY"){
-                                    Logger.error(`Faill to async event investment: ${investment.name} - error: ${error}`); 
-                                }   
+                                if (error.code !== "ER_DUP_ENTRY") {
+                                    Logger.error(`Faill to async event investment: ${investment.name} - error: ${error}`);
+                                }
                             }
-                         }));
+                        }));
                     }
                 } catch (error) {
-                    if(error.code !== "ER_DUP_ENTRY"){
-                        Logger.error(`Faill to async event investment: ${investment.name} - error: ${error}`); 
-                    }    
+                    if (error.code !== "ER_DUP_ENTRY") {
+                        Logger.error(`Faill to async event investment: ${investment.name} - error: ${error}`);
+                    }
                 }
             }));
         });
     }
-    
+
     return `Execute ${name} done`;
 };
 
