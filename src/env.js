@@ -31,7 +31,7 @@ export default {
     redis:{
         host: process.env.REDIS_HOST,
         port: parseInt(process.env.REDIS_PORT || "6379"),
-        prefix: process.env.REDIS_PREFIX || "finance-job:" 
+        prefix: process.env.REDIS_PREFIX || "finance:" 
     },
     apm:{
         serverUrl: process.env.APM_SERVER_URL,
