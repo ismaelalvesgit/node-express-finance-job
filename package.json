@@ -32,7 +32,6 @@
         "elastic-apm-node": "^3.26.0",
         "form-data": "^4.0.0",
         "googleapis": "^92.0.0",
-        "http-status-codes": "^2.2.0",
         "ioredis": "^4.28.3",
         "knex": "^0.95.15",
         "mysql2": "^2.3.3",
@@ -41,12 +40,8 @@
         "nodemailer": "^6.7.2",
         "ramda": "^0.27.2",
         "shelljs": "^0.8.5",
-        "swagger-jsdoc": "^7.0.0-rc.6",
-        "swagger-ui-express": "^4.3.0",
         "table": "^6.8.0",
-        "uuid": "^8.3.2",
-        "xml-js": "^1.6.11",
-        "yamljs": "^0.3.0"
+        "uuid": "^8.3.2"
     },
     "devDependencies": {
         "@babel/cli": "^7.16.8",
