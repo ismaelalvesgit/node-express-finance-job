@@ -1,6 +1,6 @@
 import redisClient from "./src/redis";
-import knex from "./src/db";
 import { Logger } from "./src/logger";
+import { healthcheck } from "./src/services/coreapi.service";
 
 setImmediate(async()=>{
     try {
@@ -12,7 +12,7 @@ setImmediate(async()=>{
                 }   
             });
         }
-        await knex.raw("select 1+1 as result");
+        await healthcheck();
         Logger.info("Ok");
         process.exit(0);
     } catch (error) {
