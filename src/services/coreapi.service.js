@@ -43,6 +43,27 @@ const http = new HttpAdapter({
 
 /**
  * 
+ * @returns {Promise<void>}
+ */
+export const healthcheck = async ()=>{
+    try {
+        await http.send({
+            url: "/system/healthcheck",
+            method: "GET",      
+        });
+    } catch (error) {
+        const defaultMessage = "Failed healthcheck";
+        const message = R.pathOr(
+            defaultMessage,
+            ["response", "data", 0, "message"],
+            error,
+        );
+        throw new CoreApi({statusCode: error?.response?.status, message});
+    }
+};
+
+/**
+ * 
  * @param {Object} params 
  * @returns {Promise<Array<Investment>>}
  */
@@ -68,7 +89,7 @@ export const getInvestment = async (params)=>{
 
 /**
  * 
- * @param {Object} data 
+ * @param {Object[]} data 
  * @returns {Promise<void>}
  */
 export const batchInvestment = async (data)=>{
@@ -80,6 +101,75 @@ export const batchInvestment = async (data)=>{
         });
     } catch (error) {
         const defaultMessage = "Failed to update investments";
+        const message = R.pathOr(
+            defaultMessage,
+            ["response", "data", 0, "message"],
+            error,
+        );
+        throw new CoreApi({statusCode: error?.response?.status, message});
+    }
+};
+
+/**
+ * 
+ * @param {Object[]} data 
+ * @returns {Promise<void>}
+ */
+export const batchCreatedEvent = async (data)=>{
+    try {
+        await http.send({
+            url: "/events/batchCreated",
+            method: "POST",
+            data
+        });
+    } catch (error) {
+        const defaultMessage = "Failed to create events";
+        const message = R.pathOr(
+            defaultMessage,
+            ["response", "data", 0, "message"],
+            error,
+        );
+        throw new CoreApi({statusCode: error?.response?.status, message});
+    }
+};
+
+/**
+ * 
+ * @param {Object[]} data 
+ * @returns {Promise<void>}
+ */
+export const autoCreateDividends = async (data)=>{
+    try {
+        await http.send({
+            url: "/dividends/autoCreate",
+            method: "POST",
+            data
+        });
+    } catch (error) {
+        const defaultMessage = "Failed to auto create dividends";
+        const message = R.pathOr(
+            defaultMessage,
+            ["response", "data", 0, "message"],
+            error,
+        );
+        throw new CoreApi({statusCode: error?.response?.status, message});
+    }
+};
+
+/**
+ * 
+ * @param {Date} dueDate 
+ * @returns {Promise<void>}
+ */
+export const autoPaidDividends = async (dueDate)=>{
+    try {
+        await http.send({
+            url: "/dividends/autoPaid",
+            method: "POST",
+            data: {dueDate}
+        });
+    } catch (error) {
+        const defaultMessage = "Failed to auto paid dividends";
         const message = R.pathOr(
             defaultMessage,
             ["response", "data", 0, "message"],
