@@ -114,21 +114,33 @@ export const parseFloatValue = (value) =>{
 
 /**
  * 
+ * @param {Date} date 
+ * @returns 
+ */
+export const isValidDate = (date)=>{
+    return date instanceof Date && !isNaN(date);
+};
+
+/**
+ * 
  * @param {string} date 
  * @param {string} format 
  * @param {string} delimiter 
  * @returns 
  */
 export const stringToDate = (date, format, delimiter) =>{
-    var formatLowerCase = format.toLowerCase();
-    var formatItems = formatLowerCase.split(delimiter);
-    var dateItems = date.split(delimiter);
-    var monthIndex = formatItems.indexOf("mm");
-    var dayIndex = formatItems.indexOf("dd");
-    var yearIndex = formatItems.indexOf("yyyy");
-    var month = parseInt(dateItems[monthIndex]);
+    let formatLowerCase = format.toLowerCase();
+    let formatItems = formatLowerCase.split(delimiter);
+    let dateItems = date.split(delimiter);
+    let monthIndex = formatItems.indexOf("mm");
+    let dayIndex = formatItems.indexOf("dd");
+    let yearIndex = formatItems.indexOf("yyyy");
+    let month = parseInt(dateItems[monthIndex]);
     month -= 1;
-    var formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex]);
+    let formatedDate = new Date(dateItems[yearIndex], month, dateItems[dayIndex], 3);
+    if(!isValidDate(formatedDate)){
+        return null;
+    }
     return formatedDate;
 };
 
@@ -138,9 +150,14 @@ export const stringToDate = (date, format, delimiter) =>{
  * @returns 
  */
 export const formatAmount = (value) =>{
-    return value
+    const data = Number(value
         .replace(",", ".")
-        .replace(" ", "");
+        .replace(" ", ""));
+    if(isNaN(data) || data === Infinity){
+        return null;
+    }
+
+    return data;
 };
 
 /**
