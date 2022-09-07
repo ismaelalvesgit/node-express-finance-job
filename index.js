@@ -8,6 +8,6 @@ setImmediate(async() => {
         await currencyService.updateCache();
         await syncBound();
     } catch (e) {
-        Logger.warning(e);
+        Logger.warn(e);
     }
 });
