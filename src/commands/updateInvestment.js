@@ -22,11 +22,11 @@ const command = async () => {
                 const priceAverage = invest.priceAverage ?? 0;
                 const longName = qoute.longName;
                 const logoUrl = qoute.logourl;
-                const priceDay = qoute.regularMarketPrice;
-                const priceDayHigh = qoute.regularMarketDayHigh;
-                const priceDayLow = qoute.regularMarketDayLow;
-                const changePercentDay = qoute.regularMarketChangePercent;
-                const volumeDay = qoute.regularMarketVolume;
+                const priceDay = qoute.regularMarketPrice ?? 0;
+                const priceDayHigh = qoute.regularMarketDayHigh ?? 0;
+                const priceDayLow = qoute.regularMarketDayLow ?? 0;
+                const changePercentDay = qoute.regularMarketChangePercent ?? 0;
+                const volumeDay = qoute.regularMarketVolume ?? 0;
                 const previousClosePrice = qoute.regularMarketPreviousClose ?? invest.previousClosePrice;
                 const variationDay = qoute.regularMarketChange?.toFixed(2);
                 const changePercentTotal = diffPercent(priceDay, priceAverage);
@@ -51,9 +51,11 @@ const command = async () => {
             Logger.error(`Faill to update investment: ${invest.name} - error: ${error}`);
         }
     }));
+
     if(content.length > 0){
         await coreApiService.batchInvestment(content);
     }
+    
     return `Execute ${name} done`;
 };
 

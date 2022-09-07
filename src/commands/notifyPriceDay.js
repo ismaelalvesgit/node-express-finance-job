@@ -7,6 +7,7 @@ const name = "notify-price-day";
 const group = "day";
 const schedule = "30 18 * * 1-5";
 const deadline = 180;
+import * as R from "ramda";
 
 const command = async () => {
     const investments = await coreApiService.getInvestment({
@@ -14,8 +15,8 @@ const command = async () => {
         "orderBy": "desc"
     });
 
-    const priceHigh = investments.slice(0, 3);
-    const priceLow = investments.reverse().slice(0, 3);
+    const priceHigh = R.slice(0, 3, investments);
+    const priceLow = R.reverse(investments).slice(0, 3);
     
     await send({
         to: env.email.notificator,

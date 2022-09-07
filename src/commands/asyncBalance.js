@@ -27,11 +27,13 @@ const command = async () => {
         }
     }));
 
-    await queueService.publishQeue({
-        router,
-        routingKey,
-        content
-    });
+    if(content.length > 0){
+        await queueService.publishQeue({
+            router,
+            routingKey,
+            content
+        });
+    }
 
     return `Execute ${name} done`;
 };
