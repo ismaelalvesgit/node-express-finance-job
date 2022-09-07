@@ -1,7 +1,5 @@
 import knex from "../db";
-import { jsonObjectArrayQuerySelect } from "../utils";
 import transacting from "../utils/transacting";
-import * as transactionModel from "./transaction.model";
 
 const TABLE_NAME = "investment";
 
@@ -48,29 +46,6 @@ export const selectDefault = [
  * @property {String} createdAt
  * @property {String} updatedAt
  */
-
-/**
- * @param {Object} options 
- * @param {Investment} options.where 
- * @param {number} options.limit 
- * @param {import('knex').Knex.Transaction} trx 
- * @returns {import('knex').Knex.QueryBuilder}
- */
-export const findTransaction = (options, trx) => {
-    const query = knex(TABLE_NAME)
-        .select([
-            knex.raw(jsonObjectArrayQuerySelect("transaction", transactionModel.selectDefault)),
-            ...selectDefault.map((select) => {
-                return `${TABLE_NAME}.${select}`;
-            })
-        ])
-        .innerJoin("transaction", "transaction.investmentId", "=", `${TABLE_NAME}.id`)
-        .where(options.where)
-        .limit(options.limit || 10)
-        .groupBy(`${TABLE_NAME}.id`);
-    return transacting(query, trx);
-};
-
 
 /**
  * @param {number} id 
