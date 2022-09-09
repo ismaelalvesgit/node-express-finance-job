@@ -7,6 +7,7 @@ import * as boundService from "./bound.service";
 import * as investmentService from "./investment.service";
 import * as queueService from "./queue.service";
 import * as coreApiService from "./coreapi.service";
+import * as yieldService from "./yield.service";
 
 export {
     brapiService,
@@ -17,5 +18,6 @@ export {
     currencyApiService,
     investmentService,
     queueService,
-    coreApiService
+    coreApiService,
+    yieldService
 }; 
