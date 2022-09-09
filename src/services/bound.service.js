@@ -1,12 +1,12 @@
-import * as boundModel from "../model/bound.model";
+import * as boundRepository from "../repository/bound.repository";
 import { setCache, getCache } from "../utils/cache";
 
 /**
- * @param {import("../model/bound.model").BoundList} data 
+ * @param {import("../repository/bound.repository").BoundList} data 
  * @returns {import('knex').Knex.QueryBuilder}
  */
 export const create = (data) =>{
-    return boundModel.create(data);
+    return boundRepository.create(data);
 };
 
 
@@ -14,7 +14,7 @@ export const create = (data) =>{
  * @returns {Promise<void>}
  */
 export const updateCache = async() =>{
-    const data = await boundModel.findAll();
+    const data = await boundRepository.findAll();
     if(data.length){
         const tmp = data.map(e => e.code).join(",");
         await setCache("bound", tmp);
@@ -31,6 +31,6 @@ export const findCache = async() =>{
         return cacheHit;
     }
 
-    const data = await boundModel.findAll();
+    const data = await boundRepository.findAll();
     return data.map(e => e.code).join(",");
 };

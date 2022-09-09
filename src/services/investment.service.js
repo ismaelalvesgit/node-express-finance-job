@@ -1,4 +1,4 @@
-import * as investmentModel from "../model/investment.model";
+import * as investmentModel from "../repository/investment.repository";
 
 /**
  * @param {number} id 

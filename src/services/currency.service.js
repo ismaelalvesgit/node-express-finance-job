@@ -1,4 +1,4 @@
-import * as currencyModel from "../model/currency.model";
+import * as currencyRepository from "../repository/currency.repository";
 import { getCache } from "../utils/cache";
 
 /**
@@ -11,6 +11,6 @@ export const findCache = async() =>{
         return cacheHit;
     }
 
-    const data = await currencyModel.findAll();
+    const data = await currencyRepository.findAll();
     return data.map(e => e.code).join(",");
 };
