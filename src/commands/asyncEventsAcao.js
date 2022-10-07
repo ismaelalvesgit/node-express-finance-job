@@ -13,7 +13,7 @@ const command = async () => {
         const investments = await coreApiService.getInvestment({ "search": { "category.name": categoryType.ACAO } });
         await Promise.all(investments.map(async (investment) => {
             try {
-                const data = await yieldService.getReportAcao(investment.name)
+                const data = await yieldService.getReportAcao(investment.name);
                 if (data.length > 0) {
                     const content = data.map((event) => {
                         return {

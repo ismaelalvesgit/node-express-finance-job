@@ -1,7 +1,10 @@
-import { iexcloundService, coreApiService} from "../services";
+import { coreApiService, yieldService} from "../services";
 import { Logger } from "../logger";
 import env from "../env";
 import categoryType from "../enum/categoryType";
+import * as R from "ramda";
+import { stringToDate } from "../utils";
+import { format } from "date-fns";
 
 const name = "async-divideds-stoke";
 const group = "day";
@@ -19,14 +22,27 @@ const command = async () => {
 
         await Promise.all(investments.map(async(investment)=>{
             try {
-                const { usage } = await iexcloundService.getCreditUsage();
-                if(usage){
-                    const dividends = await iexcloundService.findDividens(investment.name.toUpperCase());
-                    dividends.map((dividend)=>{
-                        content.push(Object.assign({
-                            investmentId: investment.id,
-                            fees: env.system.fees.outsidePercent,
-                        }, dividend));
+                const data = await yieldService.getDividens(categoryType.EQUITY, investment.name);
+                if (data.length > 0) {
+                    data.forEach((provent)=>{
+                        const { type, currency, dateBasis, dueDate, price } = provent;
+                        try {
+                            const payload = R.reject(R.isNil, {
+                                investmentId: investment.id,
+                                type: type,
+                                dateBasis: format(stringToDate(dateBasis, "dd/MM/yyyy", "/"), "yyyy-MM-dd"),
+                                dueDate: format(stringToDate(dueDate, "dd/MM/yyyy", "/"), "yyyy-MM-dd"),
+                                price,
+                                currency,
+                                fees: env.system.fees.outsidePercent,
+                            });
+    
+                            if (R.keys(payload).length > 5) { 
+                                content.push(payload);
+                            }
+                        } catch (error) {
+                            Logger.error(`Faill to format provent investment: ${investment.name} - error: ${error}`);
+                        }
                     });
                 }
             } catch (error) {

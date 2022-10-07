@@ -20,7 +20,7 @@ const command = async () => {
                 const data = await yieldService.getDividens(categoryType.ACAO, investment.name);
                 if (data.length > 0) {
                     data.forEach((provent)=>{
-                        const { type, currency, dateBasis, dueDate, price } = provent
+                        const { type, currency, dateBasis, dueDate, price } = provent;
                         try {
                             const payload = R.reject(R.isNil, {
                                 investmentId: investment.id,
@@ -35,9 +35,9 @@ const command = async () => {
                                 content.push(payload);
                             }
                         } catch (error) {
-                            Logger.error(`Faill to format provent investment: ${investment.name} - error: ${error}`)
+                            Logger.error(`Faill to format provent investment: ${investment.name} - error: ${error}`);
                         }
-                    })
+                    });
 
                 }
             } catch (error) {
