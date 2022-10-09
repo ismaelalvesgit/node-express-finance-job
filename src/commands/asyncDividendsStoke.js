@@ -8,7 +8,7 @@ import { format } from "date-fns";
 
 const name = "async-divideds-stoke";
 const group = "day";
-const schedule = "0 10 * * 1-5";
+const schedule = "55 9,18 * * 1-5";
 const deadline = 180;
 
 const command = async () => {
