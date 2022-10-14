@@ -21,7 +21,7 @@ const command = async () => {
                 const currency = qoute.currency;
                 const priceAverage = invest.priceAverage ?? 0;
                 const longName = qoute.longName;
-                const logoUrl = qoute.logourl;
+                const logoUrl = invest.logoUrl || qoute.logourl;
                 const priceDay = qoute.regularMarketPrice ?? 0;
                 const priceDayHigh = qoute.regularMarketDayHigh ?? 0;
                 const priceDayLow = qoute.regularMarketDayLow ?? 0;

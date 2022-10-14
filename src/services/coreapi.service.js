@@ -18,6 +18,7 @@ import env from "../env";
  * @property {Number} id
  * @property {String} name
  * @property {String} longName
+ * @property {String} logoUrl
  * @property {Number} balance
  * @property {String} sector
  * @property {Number} volumeDay
