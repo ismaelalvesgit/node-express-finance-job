@@ -94,9 +94,9 @@ export const getDividens = async(type, ticker, years)=>{
             params: R.reject(R.isNil, {
                 ticker,
                 chartProventsType: years
-            })
+            }),
         });
-
+        
         return _formatProvents(data, type);
     } catch (error) {
         Logger.error(`Failed to get provents investment: ${ticker}, Error: ${error}`);

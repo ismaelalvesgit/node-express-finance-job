@@ -1,4 +1,3 @@
-import axios from "axios";
 import cheerio from "cheerio";
 import { coreApiService } from "../services";
 import categoryType from "../enum/categoryType";
@@ -6,18 +5,25 @@ import { Logger } from "../logger";
 import env from "../env";
 import { format } from "date-fns";
 import { stringToDate } from "../utils";
+import HttpAdapter from "../utils/axios";
 
 const name = "async-events-fiis";
 const group = "day";
 const schedule = "0 10,19 * * 1-5";
 const deadline = 180;
 
+const http = new HttpAdapter({
+    baseUrl: env.yieldapi
+});
+
 const command = async () => {
     if (env.yieldapi) {
         const investments = await coreApiService.getInvestment({ "search": { "category.name": categoryType.FIIS } });
         await Promise.all(investments.map(async (investment) => {
             try {
-                const { data } = await axios.get(`${env.yieldapi}/fundos-imobiliarios/${investment.name.toLowerCase()}`);
+                const { data } = await http.send({
+                    url: `/fundos-imobiliarios/${investment.name.toLowerCase()}`
+                })
                 if (data) {
                     const $ = cheerio.load(data);
                     const events = JSON.parse($(".documents > .list").attr()["data-page"]);
