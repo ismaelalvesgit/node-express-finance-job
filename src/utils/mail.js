@@ -1,44 +1,10 @@
 import env from "../env";
-import nodemailer from "nodemailer";
-import { google } from "googleapis";
 import ejs from "ejs";
 import path from "path";
+import mailjet from 'node-mailjet'
 
-const _transport = ()=>{
-    if(env.email.type !== "OAuth2"){
-        return nodemailer.createTransport({
-            host: env.email.host,
-            port: env.email.port,
-            auth:{
-                user: env.email.notificator,
-                pass: env.email.pass,
-            },
-            secure: env.email.secure
-        });
-    }else{
-        const oauth2Client = new google.auth.OAuth2(
-            env.email.OAuth2.clientId,
-            env.email.OAuth2.clientSecret,
-            env.email.OAuth2.redirectUri
-        );
-        oauth2Client.setCredentials({
-            refresh_token: env.email.OAuth2.refreshToken,
-        });
-        const accessToken = oauth2Client.getAccessToken();
 
-        return nodemailer.createTransport({
-            service: "gmail",
-            auth:{
-                type: "OAuth2",
-                user: env.email.notificator,
-                clientId: env.email.OAuth2.clientId,
-                clientSecret: env.email.OAuth2.clientSecret,
-                refreshToken: env.email.OAuth2.refreshToken,
-                accessToken: accessToken,
-            },
-        });
-    }
-};
+const _client = mailjet.apiConnect(env.email.apiKey, env.email.secret)
 
 /**
  * 
@@ -46,24 +12,36 @@ const _transport = ()=>{
  * @param {string} subject 
  * @param {string} template 
  * @param {Object} data 
- * @param {import('nodemailer').SendMailOptions['attachments']} attachments 
+ * @param {import('node-mailjet').SendEmailV3_1.InlinedAttachment[]} attachments 
  * @returns 
  */
 export const send = ({to, subject, template, data = {}, attachments})=>{
     return new Promise((resolve, reject)=>{
-        ejs.renderFile(path.join(__dirname, `../views/mail/${template}.ejs`), data, (err, html)=>{
+        ejs.renderFile(path.join(__dirname, `../views/mail/${template}.ejs`), data, async(err, html)=>{
             if(err){
                 reject(new Error(err));
             }
-            _transport().sendMail({
-                to,
-                from: env.email.notificator,
-                subject,
-                html,
-                attachments
-            }).then(resolve).catch((err)=>{
-                reject(new Error(err));
-            });
+            _client.post('send', {
+                version: 'v3.1'
+            }).request({
+                Messages: [
+                  {
+                    From: {
+                      Email: env.email.notificator,
+                      Name: 'Finance Service',
+                    },
+                    To: [
+                      {
+                        Email: to,
+                        Name: 'You',
+                      },
+                    ],
+                    Subject: subject,
+                    HTMLPart: html,
+                    Attachments: attachments
+                  },
+                ],
+            }).then(resolve).catch(reject);
         });
     });
 };

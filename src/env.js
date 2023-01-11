@@ -41,18 +41,9 @@ export default {
         cloudProvider: process.env.APM_CLOUND_PROVIDER || "none"
     },
     email:{
-        type: process.env.EMAIL_TYPE || "OAuth2",
-        host: process.env.EMAIL_HOST || "smtp.gmail.com",
-        port: process.env.EMAIL_PORT ||  465,
-        secure: process.env.EMAIL_SECURE === "true",
         notificator: process.env.EMAIL_USER,
-        pass: process.env.EMAIL_PASSWORD,
-        OAuth2:{
-          clientId:  process.env.EMAIL_OAUTH2_CLIENTID,
-          clientSecret: process.env.EMAIL_OAUTH2_CLIENTSECRET,
-          refreshToken: process.env.EMAIL_OAUTH2_REFRESHTOKEN,
-          redirectUri: process.env.EMAIL_OAUTH2_REDIRECT_URI || "https://developers.google.com/oauthplayground"
-        },
+        apiKey: process.env.EMAIL_API_KEY,
+        secret: process.env.EMAIL_SECRET,
     },
     amqp:{
         protocol: process.env.AMQP_PROTOCOL,

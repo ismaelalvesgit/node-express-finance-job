@@ -2,7 +2,6 @@ import { coreApiService } from "../services";
 import { Logger } from "../logger";
 import { send } from "../utils/mail";
 import env from "../env";
-
 const name = "notify-price-day";
 const group = "day";
 const schedule = "30 18 * * 1-5";
@@ -14,7 +13,6 @@ const command = async () => {
         "sortBy": "changePercentDay", 
         "orderBy": "desc"
     });
-
     const priceHigh = R.slice(0, 3, investments);
     const priceLow = R.reverse(investments).slice(0, 3);
     

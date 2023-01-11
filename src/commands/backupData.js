@@ -2,7 +2,7 @@ import { format } from "date-fns";
 import { Logger } from "../logger";
 import mysqldump from "mysqldump";
 import env from "../env";
-import { mkdirSync, existsSync } from "fs";
+import { mkdirSync, existsSync, readFileSync } from "fs";
 import { send } from "../utils/mail";
 
 const name = "backup-data";
@@ -16,13 +16,13 @@ const command = async () => {
         const date = format(new Date(), "dd-MM-yyyy");
 
         if (!existsSync(dir)) {
-            mkdirSync(dir, "0744");
+            mkdirSync(dir, {recursive: true});
         }
 
         const pathFile = `${dir}${date}.sql.gz`;
 
         if (env.email.notificator) {
-            mysqldump({
+            await mysqldump({
                 connection: {
                     host: env.db.host,
                     user: env.db.user,
@@ -31,20 +31,21 @@ const command = async () => {
                 },
                 dumpToFile: pathFile,
                 compressFile: true,
-            }).then(async () => {
-                await send({
-                    to: env.email.notificator,
-                    subject: `Backup Data ${date}`,
-                    template: "bem-vindo",
-                    attachments: [
-                        {
-                            fileName: `${date}.sql.gz`,
-                            path: pathFile
-                        }
-                    ]
-                });
-                Logger.info(`Backup sucess ${date}`);
-            }).catch((e) => Logger.error(e));
+            })
+            await send({
+                to: env.email.notificator,
+                subject: `Backup Data ${date}`,
+                template: "bem-vindo",
+                attachments: [
+                    {
+                        ContentType: 'gzip',
+                        Filename: `${date}.sql.gz`,
+                        ContentID: "id1",
+                        Base64Content: readFileSync(pathFile).toString('base64')
+                    }
+                ]
+            });
+            Logger.info(`Backup sucess ${date}`);
         }
     }
 
