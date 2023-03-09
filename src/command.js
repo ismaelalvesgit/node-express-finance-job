@@ -31,7 +31,7 @@ program
 
 commands.map((command, key) => {
   const action = async () => {
-    if (env.env === "production") {
+    if (env.isProduction) {
       const uuid = v4();
       const instance = `${uuid} ${command.name}`;
       const trans = elasticAgent?.startTransaction(instance);

@@ -6,6 +6,7 @@ dotenv.config({path: path.join(__dirname, env)});
 
 export default {
     env: process.env.NODE_ENV || "development",
+    isProduction: process.env.NODE_ENV === "production",
     timezone: process.env.TZ || "America/Fortaleza",
     coreApi: process.env.CORE_URL,
     brapi: process.env.BRAPI_URL,
