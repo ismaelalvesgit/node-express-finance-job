@@ -54,6 +54,16 @@ spec:
           timeoutSeconds: 60
           failureThreshold: 6
           periodSeconds: 60
+        readinessProbe:
+          exec:
+            command:
+              - npx
+              - babel-node
+              - healthcheck
+          initialDelaySeconds: 35
+          timeoutSeconds: 60
+          failureThreshold: 6
+          periodSeconds: 60
         resources:
           requests:
             memory: "{{ .Values.resources.requests.memory }}"
@@ -62,12 +72,5 @@ spec:
             memory: "{{ .Values.resources.limits.memory }}"
             cpu: {{ .Values.resources.limits.cpu }}
         securityContext:
-          allowPrivilegeEscalation: false
-          capabilities: 
-            drop:
-              - NET_RAW
-          privileged: false
-          procMount: Default
-          runAsUser: 100
-          readOnlyRootFilesystem: false
-          runAsNonRoot: false
+          privileged: true
+          runAsUser: 0
