@@ -2,15 +2,10 @@
 Este projeto foi criado para motivos acadêmicos para minha aprendizagem pessoal
 utilizando [node.js](https://nodejs.org/en) e [Express.js](https://expressjs.com/pt-br/). 
 
-## Setup
-
-
-## Instalação de dependencias
+# Instalação de dependencias
 
 ## Projetos
 Este projeto tem como dependencia um outro projeto meu [node-horizontal-api](https://github.com/ismaelalvesgit/node-horizontal-api)
-
-<br>
 
 ## Linguagem
 È necessario que o [node.js](https://nodejs.org/en) já esteja instalado em sua máquina
