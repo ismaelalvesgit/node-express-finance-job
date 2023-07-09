@@ -1,0 +1,59 @@
+replicaCount: 1
+image:
+  repository: ismaelalvesdoc/node-horizontal-job
+  tag: latest
+  pullPolicy: Always
+
+deploy:
+  type: SINGLE # CRONJOB | SINGLE | DEPLOYMENT
+
+env:
+  NODE_ENV: development
+  TZ: America/Fortaleza
+  CORE_API_URL: http://host.docker.internal:3000
+  APM_SERVER_URL: http://kubernetes.docker.internal:8200
+  APM_SERVICE_NAME: example-horizontal-job
+
+secret:
+  API_KEY_EXAMPLE: '<key>'
+
+jobs:
+  - name: create-product
+    schedule: "* 5 * * * *"
+    namespace:
+    labels: 
+      jobgroup: "minute"  
+    command: async-create-product
+  
+  - name: create-category
+    schedule: "30 2 * * * * "
+    namespace:
+    labels: 
+      jobgroup: "minute"  
+    command: async-create-category
+
+resources:
+  requests:
+    memory: 700Mi
+    cpu: 400m
+  limits:
+    memory: 1Gi
+    cpu: 800m
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 60
+    - type: Resource
+      resource:
+        name: memory
+        target:
+          type: Utilization
+          averageUtilization: 70
