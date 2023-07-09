@@ -4,7 +4,12 @@ utilizando [node.js](https://nodejs.org/en) e [Express.js](https://expressjs.com
 
 ## Setup
 
-## 1) Instalação de dependencias
+
+## Instalação de dependencias
+
+## Projetos
+Este projeto tem como dependencia um outro projeto meu [node-horizontal-api](https://github.com/ismaelalvesgit/node-horizontal-api)
+
 <br>
 
 ## Linguagem
