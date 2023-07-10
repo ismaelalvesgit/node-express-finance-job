@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { ICommands, ICommandsProps } from "@presentation/types/ICommand";
+import { ECommandSchedule, ICommands, ICommandsProps } from "@presentation/types/ICommand";
 import { tokens } from "@di/tokens";
 import { ISystemService } from "@domain/system/types/ISystemService";
 
@@ -7,7 +7,7 @@ import { ISystemService } from "@domain/system/types/ISystemService";
 export default class HealthcheckCommand implements ICommands {
 
     private name = "healthcheck";
-    private group = "";
+    private group = ECommandSchedule.NONE;
     private schedule = "";
     private timeout = 180;
 

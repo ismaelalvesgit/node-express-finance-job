@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { ICommands, ICommandsProps } from "@presentation/types/ICommand";
+import { ECommandSchedule, ICommands, ICommandsProps } from "@presentation/types/ICommand";
 import { tokens } from "@di/tokens";
 import { ICategoryService } from "@domain/category/types/ICategoryService";
 
@@ -7,7 +7,7 @@ import { ICategoryService } from "@domain/category/types/ICategoryService";
 export default class CreateCategoryCommand implements ICommands {
 
     private name = "async-create-category";
-    private group = "minute";
+    private group = ECommandSchedule.MINUTE;
     private schedule = "30 2 * * * *";
     private timeout = 180;
 

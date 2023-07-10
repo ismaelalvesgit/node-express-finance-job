@@ -1,5 +1,5 @@
 import { inject, injectable } from "tsyringe";
-import { ICommands, ICommandsProps } from "@presentation/types/ICommand";
+import { ECommandSchedule, ICommands, ICommandsProps } from "@presentation/types/ICommand";
 import { tokens } from "@di/tokens";
 import { IProductService } from "@domain/product/types/IProductService";
 
@@ -7,7 +7,7 @@ import { IProductService } from "@domain/product/types/IProductService";
 export default class CreateProductCommand implements ICommands {
 
     private name = "async-create-product";
-    private group = "minute";
+    private group = ECommandSchedule.MINUTE;
     private schedule = "* 5 * * * *";
     private timeout = 180;
 
