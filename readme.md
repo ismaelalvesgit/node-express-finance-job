@@ -10,13 +10,6 @@ Este projeto tem como dependencia um outro projeto meu [node-horizontal-api](htt
 ## Linguagem
 È necessario que o [node.js](https://nodejs.org/en) já esteja instalado em sua máquina
 
-## Docker
-``` sh
-docker-compose up
-```
-Obs: Deixei uma aquivo de [Docker-Compose](https://docs.docker.com/compose/) para que a utilização deste 
-projeto seja mais simples
-
 ## Jobs
 A utilização job deste projeto e feitar por [CLI](https://www.hostinger.com.br/tutoriais/o-que-e-cli) segue
 abaixo a lista de commdandos e suas funcionalidades
