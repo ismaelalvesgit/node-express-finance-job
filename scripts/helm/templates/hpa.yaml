@@ -1,0 +1,39 @@
+{{- if .Values.autoscaling.enabled }}
+{{- if eq .Values.deploy.type "DEPLOYMENT" }}
+{{- range .Values.jobs }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "service.fullname" $ }}-{{ .name }}
+  labels: {{ include "service.labels" $ | nindent 5 }}
+  {{- if or $.Values.namespace $.Release.Namespace  }}
+  namespace: {{ or $.Values.namespace $.Release.Namespace }}
+  {{- end}}
+  annotations: {{ include "service.annotations" $ | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: "{{ $.Release.Name }}-{{ .name }}-deployment"
+{{ (unset $.Values.autoscaling "enabled") | toYaml | indent 2 }}
+---
+{{- end }}
+{{- end }}
+{{- if ne .Values.deploy.type "DEPLOYMENT" }}
+apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: {{ template "service.fullname" . }}
+  labels: {{ include "service.labels" . | nindent 5 }}
+  {{- if or .Values.namespace .Release.Namespace  }}
+  namespace: {{ or .Values.namespace .Release.Namespace }}
+  {{- end}}
+  annotations: {{ include "service.annotations" . | nindent 4 }}
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: {{ template "service.fullname" . }}
+{{ (unset .Values.autoscaling "enabled") | toYaml | indent 2 }}
+{{- end }}
+{{- end }}
