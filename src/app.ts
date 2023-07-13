@@ -40,15 +40,15 @@ export default class App {
             .description("Cron´s list")
             .action(()=>{
                 const data = [["Index", "Group", "Scheduling", "Command"]];
-                for (let index = 0; index < this.commands.length; index += 1) {
-                    const props = this.commands[index].props;
+                this.commands.filter(({props: command})=> command.schedule.length > 0)
+                .forEach(({props}, index)=>{
                     data.push([
-                      index.toString(),
-                      props.group,
-                      props.schedule,
-                      props.name,
+                    index.toString(),
+                    props.group,
+                    props.schedule,
+                    props.name,
                     ]);
-                }
+                })
 
                 this.log(`\n${table(data)}`);  
                 process.exit(0);
@@ -86,8 +86,7 @@ export default class App {
         });
     }
 
-    private async executeTask(execute: ICommands, callbackError = true){
-        const command = execute.props;
+    private async executeTask({props: command}: ICommands, callbackError = true){
         const uuid = v4();
         const instance = `${uuid}-${command.name}`;
         const apmTransacion = this.apmClient.Agent?.startTransaction(command.name);
@@ -108,22 +107,22 @@ export default class App {
             apmTransacion.result = apmTransacionResult;
             apmTransacion?.end();
         }
-        if(errorExec != null && callbackError){
-            throw errorExec;
-        }
+        if(errorExec != null && callbackError) throw errorExec;
     }
 
     private cronJobAction(params: string){
         setImmediate(()=>{
-            this.commands.forEach((job)=>{
+            const commands = this.commands.filter(({props: command})=> 
+                (command.name === params || params.length === 0) && 
+                command.schedule.length > 0
+            );
+            commands.forEach((job)=>{
                 const command = job.props;
-                if((command.name === params || params.length === 0 ) && command.schedule.length > 0 ){
-                    Logger.info(`Register ${command.name} schedule: ${command.schedule} group: ${command.group}`);
-                    const timezone = this.config.get().timezone;
-                    new CronJob(command.schedule, async()=>{
-                        await this.executeTask(job, false);
-                    }, null, true, timezone);
-                }
+                Logger.info(`Register ${command.name} schedule: ${command.schedule} group: ${command.group}`);
+                const timezone = this.config.get().timezone;
+                new CronJob(command.schedule, async()=>{
+                    await this.executeTask(job, false);
+                }, null, true, timezone);
             });
         });
     }
@@ -146,9 +145,7 @@ export default class App {
             this.cronJobAction(argv[index] || "");
         }else{
             this.program.exitOverride((err)=>{
-                if(err.exitCode > 1){
-                    throw err;   
-                }
+                if(err.exitCode > 1) throw err;   
             });
             this.program.parse(argv);
         }
