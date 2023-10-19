@@ -1,22 +1,22 @@
 import { inject, injectable } from "tsyringe";
 import { ECommandSchedule, ICommands, ICommandsProps } from "@presentation/types/ICommand";
 import { tokens } from "@di/tokens";
-import { ISystemService } from "@domain/system/types/ISystemService";
+import { ICoreService } from "@domain/core/types/ICoreService";
 
 @injectable()
-export default class HealthcheckCommand implements ICommands {
+export default class SyncBalanceCommand implements ICommands {
 
-    private name = "healthcheck";
-    private group = ECommandSchedule.NONE;
-    private schedule = "";
+    private name = "sync-balance";
+    private group = ECommandSchedule.DAY;
+    private schedule = "0 10,20 * * 1-5";
 
     constructor(
-        @inject(tokens.SystemService)
-        private systemService: ISystemService
+        @inject(tokens.CoreService)
+        private coreService: ICoreService
     ) { }
 
     async execute(requestId: string): Promise<void> {
-        return this.systemService.healthcheck({requestId});
+        return await this.coreService.syncBalance({requestId});
     }
 
     get props(): ICommandsProps {
@@ -27,5 +27,4 @@ export default class HealthcheckCommand implements ICommands {
             schedule: this.schedule,
         };
     }
-
 }

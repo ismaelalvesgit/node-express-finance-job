@@ -2,7 +2,7 @@ export interface ICommandsProps {
     name: string
     group: ECommandSchedule
     schedule: string
-    timeout: number
+    timeout?: number
     execute: (identify: string) => Promise<void>
 }
 
