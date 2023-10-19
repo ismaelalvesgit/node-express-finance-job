@@ -28,7 +28,7 @@ export default class MarketPriceCommand implements ICommands {
         const market = await this.brapiService.getQoute(investment.name, investment.category.name);
         const invest = investment;
         
-        if (isAfter(parseISO(market.regularMarketTime), parseISO(invest.updatedAt.toISOString()))) {
+        if (isAfter(parseISO(market.regularMarketTime), parseISO(String(invest.updatedAt)))) {
             Logger.info(`Updating values investment: ${invest.name}`);
             const priceDay = market.regularMarketPrice ?? 0;
             const priceAverage = invest.priceAverage ?? 0;
@@ -67,7 +67,7 @@ export default class MarketPriceCommand implements ICommands {
                     if (marketPrice) content.push(marketPrice);
                 }
             } catch (error) {
-                Logger.error(`Faill to update investment: ${name} - error: ${error}`);
+                Logger.error(`Faill to update investment: ${investment.name} - error: ${error}`);
             }
         }));
 

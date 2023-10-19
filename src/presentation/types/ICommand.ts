@@ -12,11 +12,11 @@ export interface ICommands {
 }
 
 export enum ECommandSchedule {
-    NONE = "none",
-    SECOND = "second",
-    MINUTE = "minute",
-    HOUR = "hour",
+    NONE = "NONE",
+    SECOND = "SECOND",
+    MINUTE = "MINUTE",
+    HOUR = "HOUR",
     DAY = "DAY",
     MONTH = "MONTH",
-    YEAR = "year",
+    YEAR = "YEAR",
 }

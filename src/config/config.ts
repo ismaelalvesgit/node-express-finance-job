@@ -27,7 +27,7 @@ export class Config {
 
     private getServiceConfig() {
         return {
-            serviceName: process.env["SERVICE_NAME"] || "example-horizontal-job",
+            serviceName: process.env["SERVICE_NAME"] || "finance-job",
             environment: process.env["NODE_ENV"] || EEnvironmentType.Develop,
             port: Number(process.env["PORT"]) || 3000,
             timezone: process.env["TZ"] || "America/Fortaleza",
