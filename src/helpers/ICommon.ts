@@ -1,6 +1,5 @@
 export interface IEntity {
     id: number
-    identify: string
     createdAt: Date
     updatedAt: Date
 }
@@ -29,5 +28,6 @@ export enum EWhereOperator {
     GreaterThanOrEqual = "ge",
     LessThan = "lt",
     LessThanOrEqual = "le",
+    In = "in",
     Like = "lk"
 }
