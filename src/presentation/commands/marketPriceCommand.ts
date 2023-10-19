@@ -14,7 +14,7 @@ export default class MarketPriceCommand implements ICommands {
 
     private name = "market-price";
     private group = ECommandSchedule.MINUTE;
-    private schedule = "*/10 9-20 * * 1-5";
+    private schedule = "*/30 9-20 * * 1-5";
 
     constructor(
         @inject(tokens.CoreService)
