@@ -48,7 +48,7 @@ export default class App {
                     props.schedule,
                     props.name,
                     ]);
-                })
+                });
 
                 this.log(`\n${table(data)}`);  
                 process.exit(0);
@@ -95,7 +95,7 @@ export default class App {
 
         try {
             Logger.info(`Starting job ${instance}`);
-            await command.execute(uuid);
+             await command.execute(uuid);
             Logger.info(`End job ${instance}`);
         } catch (err) {
             Logger.error(`Failed job ${instance}`);
