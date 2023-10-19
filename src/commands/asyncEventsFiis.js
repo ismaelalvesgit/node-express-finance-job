@@ -23,7 +23,7 @@ const command = async () => {
             try {
                 const { data } = await http.send({
                     url: `/fundos-imobiliarios/${investment.name.toLowerCase()}`
-                })
+                });
                 if (data) {
                     const $ = cheerio.load(data);
                     const events = JSON.parse($(".documents > .list").attr()["data-page"]);

@@ -1,10 +1,10 @@
 import env from "../env";
 import ejs from "ejs";
 import path from "path";
-import mailjet from 'node-mailjet'
+import mailjet from "node-mailjet";
 
 
-const _client = mailjet.apiConnect(env.email.apiKey, env.email.secret)
+const _client = mailjet.apiConnect(env.email.apiKey, env.email.secret);
 
 /**
  * 
@@ -21,19 +21,19 @@ export const send = ({to, subject, template, data = {}, attachments})=>{
             if(err){
                 reject(new Error(err));
             }
-            _client.post('send', {
-                version: 'v3.1'
+            _client.post("send", {
+                version: "v3.1"
             }).request({
                 Messages: [
                   {
                     From: {
                       Email: env.email.notificator,
-                      Name: 'Finance Service',
+                      Name: "Finance Service",
                     },
                     To: [
                       {
                         Email: to,
-                        Name: 'You',
+                        Name: "You",
                       },
                     ],
                     Subject: subject,

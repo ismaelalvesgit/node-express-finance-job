@@ -16,7 +16,7 @@ export default class HttpAdapter {
             baseURL: baseUrl,
             headers: Object.assign(headers, {
                 requestId: uuidv4(),
-                'User-Agent': uuidv4()
+                "User-Agent": uuidv4()
             }),
             params
         });
