@@ -45,7 +45,7 @@ export default class MarketPriceCommand implements ICommands {
             invest.changePercentDay = market.regularMarketChangePercent ?? 0;
             invest.volumeDay = market.regularMarketVolume ?? 0;
             invest.previousClosePrice = market.regularMarketPreviousClose ?? invest.previousClosePrice;
-            invest.variationDay = Number(market.regularMarketChange?.toFixed(2));
+            invest.variationDay = Number(market.regularMarketChange?.toFixed(2)) || 0;
             invest.variationTotal = Common.parsePercent(changePercentTotal, priceAverage) * Number(invest.qnt ?? 0);
             return invest;
         }

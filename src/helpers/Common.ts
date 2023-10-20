@@ -1,7 +1,7 @@
 import { ECategoryType } from "@domain/core/types/ICategory";
 import { Logger } from "@infrastructure/logger/logger";
-import archiver from 'archiver'
-import fs from 'fs'
+import archiver from "archiver";
+import fs from "fs";
 
 export default class Common { 
 
@@ -39,33 +39,33 @@ export default class Common {
        return new Promise((resolve, reject)=>{
             // create archive (zip)
             const output = fs.createWriteStream(pathFileZip);
-            const archive = archiver('zip', {
+            const archive = archiver("zip", {
                 zlib: { level: 9 }, // Sets the compression level.
-            })
+            });
 
-            archive.on('warning', (err: { code: string; }) => {
-                if (err.code !== 'ENOENT') {
-                    reject(err)
+            archive.on("warning", (err: { code: string; }) => {
+                if (err.code !== "ENOENT") {
+                    reject(err);
                 }
-            })
+            });
           
             // Good practice to catch this error explicitly
-            archive.on('error', (err: any) => {
-                reject(err)
-            })
+            archive.on("error", (err: Error) => {
+                reject(err);
+            });
 
             // listen for all archive data to be written
             // 'close' event is fired only when a file descriptor is involved
-            output.on('close', function() {
-                Logger.info(archive.pointer() + ' total bytes')
-                Logger.info('archiver has been finalized and the output file descriptor has closed.')
-                resolve(pathFileZip)
+            output.on("close", function() {
+                Logger.info(archive.pointer() + " total bytes");
+                Logger.info("archiver has been finalized and the output file descriptor has closed.");
+                resolve(pathFileZip);
             });
                     
-            archive.pipe(output)
-            archive.append(fs.createReadStream(pathfile), {name: fileName})
-            archive.finalize()
-       })
+            archive.pipe(output);
+            archive.append(fs.createReadStream(pathfile), {name: fileName});
+            archive.finalize();
+       });
     }
 
     static stringToDate(date: string, format: string, delimiter: string){

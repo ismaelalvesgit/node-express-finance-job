@@ -41,9 +41,9 @@ export default class BackupCommand implements ICommands {
                 database: this.config.get().db.database,
             },
             dumpToFile: pathSqlFile,
-        })
+        });
 
-        await Common.createZipFile(pathSqlFile, `${date}.sql`, pathZipFile)
+        await Common.createZipFile(pathSqlFile, `${date}.sql`, pathZipFile);
 
         await this.systemService.sendEmailNotification({
             requestId,
@@ -55,10 +55,10 @@ export default class BackupCommand implements ICommands {
             template: "bem-vindo",
             attachments: [
                 {
-                    ContentType: 'zip',
+                    ContentType: "zip",
                     Filename: `${date}.zip`,
                     ContentID: "id1",
-                    Base64Content: readFileSync(pathZipFile).toString('base64')
+                    Base64Content: readFileSync(pathZipFile).toString("base64")
                 }
             ],
             data: {}
