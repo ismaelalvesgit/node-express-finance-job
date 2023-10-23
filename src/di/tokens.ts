@@ -4,6 +4,8 @@ export const tokens = {
     EmailClient: Symbol("EmailClient"),
     BrapiRepository: Symbol("BrapiRepository"),
     BrapiService: Symbol("BrapiService"),
+    IexcloundRepository: Symbol("IexcloundRepository"),
+    IexcloundService: Symbol("IexcloundService"),
     InvestRepository: Symbol("InvestRepository"),
     InvestService: Symbol("InvestService"),
     CoreRepository: Symbol("CoreRepository"),

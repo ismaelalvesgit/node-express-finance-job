@@ -35,12 +35,14 @@ export interface Configuration {
     backend: {
         core: string
         brapi: string
+        iexclound: string
         mercadoBitCoin: string
         curreyncyApi: string
         invest: string
     }
     token: {
         brapi: string
+        iexclound: string
     }
     timezone: string
 }

@@ -47,6 +47,7 @@ export class Config {
         return {
             core: process.env["CORE_URL"] || "http://localhost:3000",
             brapi: process.env["BRAPI_URL"] || "",
+            iexclound: process.env["IEXCLOUND_URL"] || "",
             mercadoBitCoin: process.env["MERCADO_BITCOIN_URL"] || "",
             curreyncyApi: process.env["CURRENCY_URL"] || "",
             invest: process.env["INVEST_URL"] || "",
@@ -71,6 +72,7 @@ export class Config {
     private getTokenConfig() {
         return {
             brapi: process.env["BRAPI_TOKEN"] || "",
+            iexclound: process.env["IEXCLOUND_TOKEN"] || "",
         };
     }
 
