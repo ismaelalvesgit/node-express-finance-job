@@ -4,6 +4,7 @@ import { EDividendsType } from "@domain/core/types/IDividends";
 import { IEvent } from "@domain/core/types/IEvent";
 import { format } from "date-fns";
 import Common from "@helpers/Common";
+import { Logger } from "@infrastructure/logger/logger";
 
 export default class InvestMapper {
 
@@ -18,8 +19,17 @@ export default class InvestMapper {
 
     static reportFundsMap(data: ITickerReportsFunds[]): IEvent[]{
         return data.map((report)=>{
-            const dateReference = format(Common.stringToDate(report.dataReferencia, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd"); 
-            const dateDelivery = format(Common.stringToDate(report.dataEntrega, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd");
+            let dateReference = ""
+            let dateDelivery = ""
+            try {
+                dateReference = format(Common.stringToDate(report.dataReferencia, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd"); 
+                dateDelivery = format(Common.stringToDate(report.dataEntrega, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd");
+            } catch (error) {
+                dateReference = format(new Date(),  "yyyy-MM-dd")
+                dateDelivery = format(new Date(),  "yyyy-MM-dd")
+                Logger.error("Failed to parse report date", error)   
+            }
+
             return {
                 dateReference,
                 dateDelivery,

@@ -11,7 +11,7 @@ import SystemRepository from "@domain/system/infrastructure/systemRepository";
 import HealthcheckCommand from "@presentation/commands/healthcheckCommand";
 import BrapiService from "@domain/brapi/services/brapiService";
 import BrapiRepository from "@domain/brapi/infrastructure/brapiRepository";
-import IexcloundService from "@domain/iexclound/services/IexcloundService";
+import IexcloundService from "@domain/iexclound/services/iexcloundService";
 import IexcloundRepository from "@domain/iexclound/infrastructure/iexcloundRepository";
 import InvestService from "@domain/invest/services/investService";
 import InvestRepository from "@domain/invest/infrastructure/investRepository";
@@ -24,6 +24,8 @@ import SyncDividendsPaidCommand from "@presentation/commands/syncDividendsPaidCo
 import MarketPriceCommand from "@presentation/commands/marketPriceCommand";
 import NotifyPriceDayCommand from "@presentation/commands/notifyPriceDayCommand";
 import BackupCommand from "@presentation/commands/backupCommand";
+import SyncEventsBrdCommand from "@presentation/commands/syncEventsBrdCommand";
+import SyncEventsFundsCommand from "@presentation/commands/syncEventsFundsCommand";
 
 const childContainer = container.createChildContainer();
 
@@ -48,6 +50,8 @@ childContainer.registerSingleton(tokens.Commands, SyncDividendsFundsCommand);
 childContainer.registerSingleton(tokens.Commands, SyncDividendsStocksCommand);
 childContainer.registerSingleton(tokens.Commands, SyncDividendsPaidCommand);
 childContainer.registerSingleton(tokens.Commands, SyncEventsAcaoCommand);
+childContainer.registerSingleton(tokens.Commands, SyncEventsBrdCommand);
+childContainer.registerSingleton(tokens.Commands, SyncEventsFundsCommand);
 childContainer.registerSingleton(tokens.Commands, NotifyPriceDayCommand);
 childContainer.registerSingleton(tokens.Commands, HealthcheckCommand);
 childContainer.registerSingleton(tokens.Commands, BackupCommand);

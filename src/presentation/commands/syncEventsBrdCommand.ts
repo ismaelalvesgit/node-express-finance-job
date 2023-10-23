@@ -8,7 +8,7 @@ import { Logger } from "@infrastructure/logger/logger";
 import { IInvestService } from "@domain/invest/types/IInvestService";
 
 @injectable()
-export default class SyncEventsAcaoCommand implements ICommands {
+export default class SyncEventsBrdCommand implements ICommands {
 
     private name = "sync-events-brd";
     private group = ECommandSchedule.DAY;
