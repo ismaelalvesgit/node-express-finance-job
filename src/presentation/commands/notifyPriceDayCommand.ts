@@ -34,7 +34,7 @@ export default class NotifyPriceDayCommand implements ICommands {
         }, {requestId});
         const priceHigh = R.slice(0, 3, investments.items);
         const priceLow = R.reverse(investments.items).slice(0, 3);
-
+        
         await this.systemService.sendEmailNotification({
             requestId,
             subject: "Altas / Baixas do Dia",
