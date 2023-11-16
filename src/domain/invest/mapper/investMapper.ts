@@ -19,15 +19,15 @@ export default class InvestMapper {
 
     static reportFundsMap(data: ITickerReportsFunds[]): IEvent[]{
         return data.map((report)=>{
-            let dateReference = ""
-            let dateDelivery = ""
+            let dateReference = "";
+            let dateDelivery = "";
             try {
                 dateReference = format(Common.stringToDate(report.dataReferencia, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd"); 
                 dateDelivery = format(Common.stringToDate(report.dataEntrega, "dd/MM/yyyy", "/") || new Date(), "yyyy-MM-dd");
             } catch (error) {
-                dateReference = format(new Date(),  "yyyy-MM-dd")
-                dateDelivery = format(new Date(),  "yyyy-MM-dd")
-                Logger.error("Failed to parse report date", error)   
+                dateReference = format(new Date(),  "yyyy-MM-dd");
+                dateDelivery = format(new Date(),  "yyyy-MM-dd");
+                Logger.error("Failed to parse report date", error);   
             }
 
             return {

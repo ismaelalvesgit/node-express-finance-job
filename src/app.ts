@@ -118,11 +118,11 @@ export default class App {
             );
             commands.forEach((job)=>{
                 const command = job.props;
-                Logger.info(`Register ${command.name} schedule: ${command.schedule} group: ${command.group}`);
                 const timezone = this.config.get().timezone;
-                new CronJob(command.schedule, async()=>{
+                const cron = new CronJob(command.schedule, async()=>{
                     await this.executeTask(job, false);
                 }, null, true, timezone);
+                Logger.info(`Register ${command.name} NextExecution: ${cron.nextDate().toFormat("HH 'Hours And' mm 'Minutes'")}`);
             });
         });
     }
