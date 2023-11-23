@@ -67,35 +67,39 @@ export default class MarketPriceCommand implements ICommands {
     private async marketPriceUSD(investments: IInvestment[]): Promise<IInvestment[]> {
         const content: IInvestment[] = [];
         const symbols = investments.map((investment)=> investment.name);
-        const marketPrices = await this.iexcloundService.getQoute(symbols);
+        try {
+            const marketPrices = await this.iexcloundService.getQoute(symbols);
 
-        marketPrices.map((market) => {
-            const invest = investments.find((investment)=> investment.name === market.symbol);
+            marketPrices.map((market) => {
+                const invest = investments.find((investment)=> investment.name === market.symbol);
 
-            if (
-                invest !== undefined && 
-                isAfter(parseISO(new Date(market.latestUpdate).toISOString()), parseISO(String(invest.updatedAt)))
-            ) {
-                Logger.info(`Updating values investment: ${invest.name}`);
-                const priceDay = market.latestPrice ?? 0;
-                const priceAverage = invest.priceAverage ?? 0;
-                const changePercentTotal = Common.diffPercent(priceDay, priceAverage);
-                invest.priceAverage = priceAverage;
-                invest.priceDay = priceDay;
-                invest.changePercentTotal = changePercentTotal;
-                invest.currency = market.currency;
-                invest.longName = market.companyName;
-                invest.logoUrl = invest.logoUrl || market.logourl;
-                invest.priceDayHigh = market?.high ?? 0;
-                invest.priceDayLow = market?.low ?? 0;
-                invest.changePercentDay = market.changePercent ?? 0;
-                invest.volumeDay = market.volume ?? 0;
-                invest.previousClosePrice = market.previousClose ?? invest.previousClosePrice;
-                invest.variationDay = Number(market.change) || 0;
-                invest.variationTotal = Common.parsePercent(changePercentTotal, priceAverage) * Number(invest.qnt ?? 0);
-                content.push(invest);
-            }
-        });
+                if (
+                    invest !== undefined && 
+                    isAfter(parseISO(new Date(market.latestUpdate).toISOString()), parseISO(String(invest.updatedAt)))
+                ) {
+                    Logger.info(`Updating values investment: ${invest.name}`);
+                    const priceDay = market.latestPrice ?? 0;
+                    const priceAverage = invest.priceAverage ?? 0;
+                    const changePercentTotal = Common.diffPercent(priceDay, priceAverage);
+                    invest.priceAverage = priceAverage;
+                    invest.priceDay = priceDay;
+                    invest.changePercentTotal = changePercentTotal;
+                    invest.currency = market.currency;
+                    invest.longName = market.companyName;
+                    invest.logoUrl = invest.logoUrl || market.logourl;
+                    invest.priceDayHigh = market?.high ?? 0;
+                    invest.priceDayLow = market?.low ?? 0;
+                    invest.changePercentDay = market.changePercent ?? 0;
+                    invest.volumeDay = market.volume ?? 0;
+                    invest.previousClosePrice = market.previousClose ?? invest.previousClosePrice;
+                    invest.variationDay = Number(market.change) || 0;
+                    invest.variationTotal = Common.parsePercent(changePercentTotal, priceAverage) * Number(invest.qnt ?? 0);
+                    content.push(invest);
+                }
+            });
+        } catch (error) {
+            Logger.error(`Faill to update investments: ${symbols} - error: ${error}`);
+        }
         
         return content;
     }
